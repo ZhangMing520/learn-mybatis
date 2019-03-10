@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!-- 加载 外部配置文件
+    顺序加载：
+    1.属性文件中的属性首先被读取
+    2.在类路径或URL资源中读取的属性第二顺序加载，并且可以覆盖第一顺序加载的值
+    3.在方法体中给定的参数最后加载，覆盖上述两种加载的值
+    -->
+    <properties resource="jdbc.properties"/>
+
+    <settings>
+        <setting name="cacheEnabled" value="true"/>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="aggressiveLazyLoading" value="true"/>
+        <setting name="multipleResultSetsEnabled" value="true"/>
+        <setting name="useColumnLabel" value="true"/>
+        <setting name="useGeneratedKeys" value="false"/>
+        <setting name="autoMappingBehavior" value="PARTIAL"/>
+        <setting name="defaultExecutorType" value="SIMPLE"/>
+        <setting name="defaultStatementTimeout" value="25000"/>
+    </settings>
+
+
+    <typeHandlers>
+        <!-- jdbcType 必须指定  mybatis无法审查数据库的元数据从而决定类型 -->
+        <typeHandler handler="org.mybatis.example.TypeHandlerDemo" javaType="String" jdbcType="VARCHAR" />
+    </typeHandlers>
+
+    <!-- 别名映射 -->
+    <typeAliases>
+        <typeAlias type="org.mybatis.example.Blog" alias="Blog"/>
+    </typeAliases>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"></transactionManager>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- mapper 文件 -->
+    <mappers>
+        <mapper resource="org/mybatis/example/BlogMapper.xml"></mapper>
+
+        <!-- 支持 file 协议 -->
+        <!--<mapper resource="file:///org/mybatis/example/BlogMapper.xml"></mapper>-->
+    </mappers>
+
+</configuration>
